@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIFA World Cup 2026 - BST Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>World Cup 2026 🏆</h1>
+            <button id="theme-toggle">Switch Theme</button>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Live Scores Section -->
+        <section id="live-scores">
+            <h2>Live & Recent Scores</h2>
+            <div id="scores-container" class="grid-container">
+                <p>Fetching latest matches...</p>
+            </div>
+        </section>
+
+        <!-- Groups Section -->
+        <section id="groups">
+            <h2>Group Standings</h2>
+            <div id="groups-container" class="grid-container">
+                <!-- Groups will be injected here -->
+            </div>
+        </section>
+
+        <!-- Knockout Section -->
+        <section id="knockout">
+            <h2>Knockout Stage (Round of 32)</h2>
+            <div id="bracket-container">
+                <div class="matchup">
+                    <span class="match-label">Match 81</span>
+                    <div class="team">Winner Group A</div>
+                    <div class="team">Runner-up Group C</div>
+                </div>
+                <!-- Add more matchups as needed -->
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

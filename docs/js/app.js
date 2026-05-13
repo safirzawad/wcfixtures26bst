@@ -43,7 +43,26 @@ function formatBSTFull(utcString) {
 }
 
 function getTeamInfo(name) {
-  return WC2026.teams[name] || { flag: "🏳️", short: name ? name.slice(0, 3).toUpperCase() : "TBD" };
+  return WC2026.teams[name] || { flag: "un", short: name ? name.slice(0, 3).toUpperCase() : "TBD" };
+}
+
+// Returns an <img> tag for a team's flag
+// Scotland & England use flagicons.lipis.dev (supports GB subdivisions)
+// All others use flagcdn.com (fast, free, no auth needed)
+function flagImg(name, size = "sm") {
+  const info = getTeamInfo(name);
+  const code = info.flag;
+  const w = size === "lg" ? 32 : size === "md" ? 24 : 20;
+  const h = Math.round(w * 0.67);
+
+  let src;
+  if (info.special) {
+    src = `https://flagicons.lipis.dev/flags/4x3/${code}.svg`;
+  } else {
+    src = `https://flagcdn.com/w${w * 2}/${code}.png`;
+  }
+
+  return `<img class="flag-img flag-${size}" src="${src}" alt="${name} flag" width="${w}" height="${h}" loading="lazy" onerror="this.style.opacity='0.3'">`;
 }
 
 function getMatchStatus(match) {
@@ -134,7 +153,6 @@ function renderGroups() {
     card.className = "group-card";
 
     const rows = standings.map((s, i) => {
-      const info = getTeamInfo(s.team);
       const rankClass = `rank-${i + 1}`;
       const qualifiedClass = i < 2 ? "qualified" : "";
       return `
@@ -142,7 +160,7 @@ function renderGroups() {
           <td>
             <div class="team-cell">
               <span class="rank-indicator ${rankClass}">${i + 1}</span>
-              <span class="team-flag">${info.flag}</span>
+              ${flagImg(s.team, "sm")}
               <span>${s.team}</span>
             </div>
           </td>
@@ -209,8 +227,6 @@ function renderScoreboard() {
 }
 
 function buildMatchCard(m) {
-  const hInfo = getTeamInfo(m.home);
-  const aInfo = getTeamInfo(m.away);
   const status = getMatchStatus(m);
   const score = getScore(m);
 
@@ -227,7 +243,7 @@ function buildMatchCard(m) {
   return `
     <div class="match-card">
       <div class="match-team home">
-        <span class="match-team-flag">${hInfo.flag}</span>
+        ${flagImg(m.home, "lg")}
         <span class="match-team-name">${m.home}</span>
       </div>
       <div class="match-score-block">
@@ -237,7 +253,7 @@ function buildMatchCard(m) {
         <span class="match-meta">${m.venue.split(",")[0]}</span>
       </div>
       <div class="match-team away">
-        <span class="match-team-flag">${aInfo.flag}</span>
+        ${flagImg(m.away, "lg")}
         <span class="match-team-name">${m.away}</span>
       </div>
     </div>`;
@@ -271,13 +287,12 @@ function buildKOCard(m) {
   const awayPlaceholder = m.awayPlaceholder || "TBD";
 
   function teamRow(team, placeholder, scoreVal, side) {
-    const info = team ? getTeamInfo(team) : null;
     const isWinner = status === "finished" && scoreVal !== null && scoreVal > (side === "home" ? score.away : score.home);
     return `
       <div class="ko-team">
         <div class="ko-team-info">
-          ${info
-            ? `<span class="ko-team-flag">${info.flag}</span><span>${team}</span>`
+          ${team
+            ? `${flagImg(team, "md")}<span>${team}</span>`
             : `<span class="ko-team-placeholder">${placeholder}</span>`}
         </div>
         ${scoreVal !== null ? `<span class="ko-team-score ${isWinner ? "winner" : ""}">${scoreVal}</span>` : ""}

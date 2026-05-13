@@ -281,7 +281,18 @@ body {
   font-weight: 500;
 }
 
-.team-flag { font-size: 1.2rem; line-height: 1; }
+.flag-img {
+  display: inline-block;
+  object-fit: cover;
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.25);
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+.flag-sm  { width: 20px; height: 14px; }
+.flag-md  { width: 24px; height: 16px; }
+.flag-lg  { width: 32px; height: 22px; }
+
 .team-name-short { font-size: .8rem; color: var(--text-secondary); }
 
 .pts-cell { font-weight: 700; color: var(--text-primary); }
@@ -385,7 +396,7 @@ body {
 .match-team.home { justify-content: flex-end; }
 .match-team.away { justify-content: flex-start; }
 
-.match-team-flag { font-size: 1.6rem; }
+.match-team-flag { width: 32px; height: 22px; }
 .match-team-name {
   font-weight: 600;
   font-size: .9rem;
@@ -537,7 +548,7 @@ body {
   color: var(--text-primary);
 }
 
-.ko-team-flag { font-size: 1.3rem; }
+.ko-team-flag { width: 24px; height: 16px; }
 .ko-team-placeholder {
   font-size: .8rem;
   color: var(--text-muted);

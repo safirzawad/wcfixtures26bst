@@ -46,23 +46,20 @@ function getTeamInfo(name) {
   return WC2026.teams[name] || { flag: "un", short: name ? name.slice(0, 3).toUpperCase() : "TBD" };
 }
 
-// Returns an <img> tag for a team's flag
-// Scotland & England use flagicons.lipis.dev (supports GB subdivisions)
-// All others use flagcdn.com (fast, free, no auth needed)
+// Returns an <img> tag for a team's flag.
+// All flags (including England & Scotland) use flagcdn.com SVG via their
+// 2-letter ISO code. GB subdivisions (gb-sct, gb-eng) are supported by
+// flagcdn.com in SVG format at: https://flagcdn.com/{code}.svg
 function flagImg(name, size = "sm") {
   const info = getTeamInfo(name);
-  const code = info.flag;
+  const code = info.flag; // e.g. "br", "gb-eng", "gb-sct"
   const w = size === "lg" ? 32 : size === "md" ? 24 : 20;
   const h = Math.round(w * 0.67);
 
-  let src;
-  if (info.special) {
-    src = `https://flagicons.lipis.dev/flags/4x3/${code}.svg`;
-  } else {
-    src = `https://flagcdn.com/w${w * 2}/${code}.png`;
-  }
+  // flagcdn.com supports SVG for all codes including gb-eng and gb-sct
+  const src = `https://flagcdn.com/${code}.svg`;
 
-  return `<img class="flag-img flag-${size}" src="${src}" alt="${name} flag" width="${w}" height="${h}" loading="lazy" onerror="this.style.opacity='0.3'">`;
+  return `<img class="flag-img flag-${size}" src="${src}" alt="${name} flag" width="${w}" height="${h}" loading="lazy" onerror="this.style.display='none'">`;
 }
 
 function getMatchStatus(match) {
